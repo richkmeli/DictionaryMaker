@@ -17,7 +17,7 @@ public class App implements Runnable{
 
 	//  scrive sul file di testo tutte le stringhe di lunghezza "length" con i caratteri presenti nel vettore dei simboli
 	protected void generate(int keyLength, Vector<Character> symbolVector, PrintWriter txtOut, Boolean chckbxKeyLowerThanLength){
-		view.setTxtareaTextBoard("[INIZIALIZE] Starting generation of keys");
+		view.setTxtareaTextBoard("[INITIALIZE] Starting generation of keys");
 		
 		int j = keyLength; 	// indice per ciclo for riguardante i le chiavi di lunghezza minore di key
 		if (chckbxKeyLowerThanLength == true){
@@ -98,7 +98,7 @@ public class App implements Runnable{
 			boolean chckbx_AZ,
 			boolean chckbx_SpecialCharacter
 			){
-		view.setTxtareaTextBoard("[INIZIALIZE] Making vector of alphabet");
+		view.setTxtareaTextBoard("[INITIALIZE] Making vector of alphabet");
 		
 		Vector<Character> SymbolVector = new Vector<Character>();
 		if(chckbx_09 ==  true){
@@ -144,7 +144,7 @@ public class App implements Runnable{
 
 	// apre il file di testo su cui scrivere 
 	public PrintWriter openFile(String filename){
-		view.setTxtareaTextBoard("[INIZIALIZE] Opening txt stream");
+		view.setTxtareaTextBoard("[INITIALIZE] Opening txt stream");
 		PrintWriter txtOut=null;
 		try{
 			txtOut = new PrintWriter(filename);

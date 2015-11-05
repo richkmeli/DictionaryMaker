@@ -37,8 +37,11 @@ public class SwingView implements View{
 	protected App app;	// comunicazione da vista a controller
 	private JFrame frmDictionarymaker;
 	private JTextField textFieldKeyLength;
-	private JTextField textField_1;
+	private JTextField txtCombination;
 	private JTextArea txtareaTextBoard; 			// per permettere la scrittora del controller durante la generate
+	private JTextField textFieldPrefix;
+	private JTextField textFieldSuffix;
+	private JTextField txtM;
 
 	/**
 	 * Create the application.
@@ -95,7 +98,7 @@ public class SwingView implements View{
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel_3);
-		panel_3.setLayout(new GridLayout(0, 1, 10, 10));
+		panel_3.setLayout(new GridLayout(0, 1, 5, 5));
 		
 		JButton btnASCIItable = new JButton("Show ASCII table");
 		panel_3.add(btnASCIItable);
@@ -108,14 +111,14 @@ public class SwingView implements View{
 		lblNumberOfCombination.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_3.add(lblNumberOfCombination);
 		
-		textField_1 = new JTextField();
-		textField_1.setForeground(Color.GREEN);
-		textField_1.setBackground(Color.BLACK);
-		textField_1.setEditable(false);
-		textField_1.setText("0");
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_3.add(textField_1);
-		textField_1.setColumns(10);
+		txtCombination = new JTextField();
+		txtCombination.setForeground(Color.GREEN);
+		txtCombination.setBackground(Color.BLACK);
+		txtCombination.setEditable(false);
+		txtCombination.setText("0");
+		txtCombination.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_3.add(txtCombination);
+		txtCombination.setColumns(10);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -124,16 +127,30 @@ public class SwingView implements View{
 		
 		JPanel panel_7 = new JPanel();
 		panel_5.add(panel_7);
-		panel_7.setLayout(new GridLayout(3, 2, 0, 5));
+		panel_7.setLayout(new GridLayout(2, 1, 0, 5));
 		
-		JPanel panel_6 = new JPanel();
-		panel_5.add(panel_6);
-		panel_6.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panel_10 = new JPanel();
+		panel_7.add(panel_10);
+		panel_10.setLayout(new GridLayout(2, 0, 0, 0));
+		
+		JLabel lblPrefix = new JLabel("Prefix");
+		panel_10.add(lblPrefix);
+		
+		textFieldPrefix = new JTextField();
+		panel_10.add(textFieldPrefix);
+		textFieldPrefix.setColumns(10);
+		
+		JLabel lblSuffix = new JLabel("Suffix");
+		panel_10.add(lblSuffix);
+		
+		textFieldSuffix = new JTextField();
+		panel_10.add(textFieldSuffix);
+		textFieldSuffix.setColumns(10);
 		
 		JPanel panel_8 = new JPanel();
+		panel_7.add(panel_8);
 		panel_8.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_6.add(panel_8);
-		panel_8.setLayout(new GridLayout(3, 1, 0, 0));
+		panel_8.setLayout(new GridLayout(3, 3, 0, 0));
 		
 		JLabel lblKeyLength = new JLabel("Key Length");
 		panel_8.add(lblKeyLength);
@@ -148,6 +165,26 @@ public class SwingView implements View{
 		textFieldKeyLength.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldKeyLength.setText("4");
 		textFieldKeyLength.setColumns(10);
+		
+		JPanel panel_6 = new JPanel();
+		panel_5.add(panel_6);
+		panel_6.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel panel_11 = new JPanel();
+		panel_6.add(panel_11);
+		panel_11.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JLabel lblNewLabel = new JLabel("Size of TXT file");
+		panel_11.add(lblNewLabel);
+		
+		txtM = new JTextField();
+		txtM.setBackground(Color.BLACK);
+		txtM.setForeground(Color.GREEN);
+		txtM.setHorizontalAlignment(SwingConstants.CENTER);
+		txtM.setEditable(false);
+		txtM.setText("0 MB");
+		panel_11.add(txtM);
+		txtM.setColumns(10);
 		
 		JPanel panel_9 = new JPanel();
 		panel_9.setBackground(Color.WHITE);
