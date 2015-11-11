@@ -6,11 +6,13 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+
 import java.awt.GridLayout;
-import javax.swing.JTextPane;
+import java.awt.Image;
+import java.awt.Label;
+
 import javax.swing.JCheckBox;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
@@ -21,17 +23,12 @@ import it.riccardomelioli.dictionarymaker.view.View;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
+import java.net.URL;
 
 import javax.swing.JTextField;
-import javax.swing.JScrollBar;
 import javax.swing.JProgressBar;
 import java.awt.Font;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.AdjustmentEvent;
 import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.DropMode;
 
 public class SwingView implements View{
 	protected App app;	// comunicazione da vista a controller
@@ -42,6 +39,7 @@ public class SwingView implements View{
 	private JTextField textFieldPrefix;
 	private JTextField textFieldSuffix;
 	private JTextField txtM;
+	private ImageFrame frmImgASCII;
 
 	/**
 	 * Create the application.
@@ -100,13 +98,33 @@ public class SwingView implements View{
 		panel_1.add(panel_3);
 		panel_3.setLayout(new GridLayout(0, 1, 5, 5));
 		
+		// Frame Tabella ASCII
+		
+/*		frmASCII.setTitle("ASCII Table");
+		frmASCII.setBounds(100, 100, 500, 400);
+		frmASCII.setLayout(new BorderLayout());
+		frmASCII.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+*/		
 		JButton btnASCIItable = new JButton("Show ASCII table");
-		panel_3.add(btnASCIItable);
-		btnASCIItable.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnASCIItable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			/*	ImageIcon ASCIIicon = null;
+				URL ASCIIurl = getClass().getResource("/ASCIITable.gif");
+				if(ASCIIurl != null)
+					ASCIIicon = new ImageIcon(ASCIIurl);
+				
+				
+				// Jlabel con dentro l'immagine
+				JLabel labelASCII = new JLabel(ASCIIicon);
+				frmASCII.add(labelASCII,BorderLayout.CENTER);*/
+				frmImgASCII = new ImageFrame("/ASCIITable.gif");
+				frmImgASCII.setVisible(true);
 			}
 		});
-		
+		panel_3.add(btnASCIItable);
+	
+			
 		JLabel lblNumberOfCombination = new JLabel("Number of Combination");
 		lblNumberOfCombination.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_3.add(lblNumberOfCombination);
@@ -233,6 +251,4 @@ public class SwingView implements View{
 		
 		frmDictionarymaker.setVisible(true);
 	}
-
-
 }
