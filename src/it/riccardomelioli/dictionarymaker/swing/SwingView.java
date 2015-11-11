@@ -152,6 +152,7 @@ public class SwingView implements View{
 		panel_10.setLayout(new GridLayout(2, 0, 0, 0));
 		
 		JLabel lblPrefix = new JLabel("Prefix");
+		lblPrefix.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_10.add(lblPrefix);
 		
 		textFieldPrefix = new JTextField();
@@ -159,6 +160,7 @@ public class SwingView implements View{
 		textFieldPrefix.setColumns(10);
 		
 		JLabel lblSuffix = new JLabel("Suffix");
+		lblSuffix.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_10.add(lblSuffix);
 		
 		textFieldSuffix = new JTextField();
@@ -193,6 +195,7 @@ public class SwingView implements View{
 		panel_11.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JLabel lblNewLabel = new JLabel("Size of TXT file");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_11.add(lblNewLabel);
 		
 		txtM = new JTextField();
