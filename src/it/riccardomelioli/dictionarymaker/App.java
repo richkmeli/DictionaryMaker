@@ -16,6 +16,9 @@ public class App implements Runnable{
 	}
 
 	//  scrive sul file di testo tutte le stringhe di lunghezza "length" con i caratteri presenti nel vettore dei simboli
+	/*
+	 * 
+	 */
 	protected void generate(int keyLength, Vector<Character> symbolVector, PrintWriter txtOut, Boolean chckbxKeyLowerThanLength){
 		view.setTxtareaTextBoard("[INITIALIZE] Starting generation of keys");
 		
