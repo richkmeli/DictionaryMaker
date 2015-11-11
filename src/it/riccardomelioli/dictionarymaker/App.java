@@ -9,7 +9,10 @@ import it.riccardomelioli.dictionarymaker.view.View;
 public class App implements Runnable{
 	protected View view;	// comunicazione da controller a view
 
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run(){
 		view = new SwingView(this);
