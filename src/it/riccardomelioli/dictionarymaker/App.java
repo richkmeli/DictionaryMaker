@@ -1,6 +1,8 @@
 package it.riccardomelioli.dictionarymaker;
 
 import java.io.PrintWriter;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import it.riccardomelioli.dictionarymaker.swing.SwingView;
@@ -8,17 +10,15 @@ import it.riccardomelioli.dictionarymaker.view.View;
 
 public class App implements Runnable{
 	protected View view;	// comunicazione da controller a view
-
-
+	private int workStatus;
+	
 	@Override
 	public void run(){
+		workStatus = 0;
 		view = new SwingView(this);
 	}
 
 	//  scrive sul file di testo tutte le stringhe di lunghezza "length" con i caratteri presenti nel vettore dei simboli
-	/*
-	 * 
-	 */
 	protected void generate(int keyLength, Vector<Character> symbolVector, PrintWriter txtOut, Boolean chckbxKeyLowerThanLength){
 		view.setTxtareaTextBoard("[INITIALIZE] Starting generation of keys");
 		
@@ -50,6 +50,7 @@ public class App implements Runnable{
 			boolean tmpKeyTerminated = true;
 			int cicleCounter=1;
 			int[] tmpKeyIndexAlphabet = new int[j];
+			int totalKeyNumber = (int) Math.pow(symbolVector.size(),j);
 			
 			while(tmpKeyTerminated == true){	//  0037 - 9999 -> end 9999		// NON SI FERMA QUA
 					
@@ -79,6 +80,7 @@ public class App implements Runnable{
 					
 					// status
 					++cicleCounter;
+					workStatus = (int)(((float)cicleCounter)/totalKeyNumber*100);
 					if( cicleCounter % 10000 == 0 )
 						view.setTxtareaTextBoard("[STATUS] keys generated: " + cicleCounter + " key");
 				
@@ -91,7 +93,6 @@ public class App implements Runnable{
 			}
 			++j;
 		}
-
 	}
 
 	// crea il vettore di simboli utilizzati
@@ -138,10 +139,44 @@ public class App implements Runnable{
 			boolean chckbx_SpecialCharacter,
 			boolean chckbxKeyLowerThanLength
 			){
-		PrintWriter txtOut = openFile("Dictionary.txt");
-		generate(keyLength, createSymbolVector(chckbx_09,chckbx_az,chckbx_AZ,chckbx_SpecialCharacter), txtOut, chckbxKeyLowerThanLength);
-		txtOut.close();
-		view.setTxtareaTextBoard("[FINILAZE] Closing txt stream");
+		
+
+		/*
+		 * La generazione delle chiavi è distribuita su un altro thread
+		 */
+		Thread threadGenerate = new Thread(new Runnable() {	
+			@Override
+			public void run() {
+				PrintWriter txtOut = openFile("Dictionary.txt");
+				generate(keyLength, createSymbolVector(chckbx_09,chckbx_az,chckbx_AZ,chckbx_SpecialCharacter), txtOut, chckbxKeyLowerThanLength);
+				txtOut.close();
+				view.setTxtareaTextBoard("[FINILAZE] Closing txt stream");
+			}
+		});
+		threadGenerate.start();
+		
+		/*
+		 * A intervalli costanti viene aggiornata la View
+		 * per notificare lo stato di avanzamento nella generazione
+		 * delle chiavi
+		 */
+		Timer updateViewTimer = new Timer();
+		updateViewTimer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				
+				enableGenerateButton(false);
+				
+				if(threadGenerate.isAlive()){
+					updateViewProgressBar(workStatus);
+				}
+				else {
+					updateViewProgressBar(100);
+					enableGenerateButton(true);
+					this.cancel();
+				}
+			}
+		}, 0,50);
 
 	}
 
@@ -155,6 +190,16 @@ public class App implements Runnable{
 			throwable.printStackTrace();
 		}
 		return txtOut;
+	}
+	
+	// aggiorna progressbar della view
+	private void updateViewProgressBar(int perc){
+		view.updateProgressBar(perc);
+	}
+	
+	// abilita disabilita tasto generate della view
+	private void enableGenerateButton(boolean val){
+		view.enableGenerateButton(val);
 	}
 	
 }
