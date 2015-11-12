@@ -217,7 +217,7 @@ public class App implements Runnable{
 			j = 1; 	// siginifica che vogliamo le chiavi di lunghezza minore
 		}
 		for(int k = j; k <= keyLength; ++k){
-			totalKeyNumber = totalKeyNumber + (int) Math.pow(symbolVector.size(),k);	//alfabeto ^ lunghezza stringa in quell'iterazione(j), quindi considera anche chiavi lunghezza inferioriori
+			totalKeyNumber = totalKeyNumber + (long) Math.pow(symbolVector.size(),k);	//alfabeto ^ lunghezza stringa in quell'iterazione(j), quindi considera anche chiavi lunghezza inferioriori
 		}
 		return totalKeyNumber;
 	}

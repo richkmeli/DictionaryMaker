@@ -62,13 +62,19 @@ public class SwingView implements View{
 	
 	public void refreshTxtNumberIfKey(){
 		int keyLength = Integer.parseInt(textFieldKeyLength.getText());
-	txtNumberOfKey.setText(Long.toString(app.numberOfKey(keyLength,
-			chckbx_09.isSelected(),
-			chckbx_az.isSelected(),
-			chckbx_AZ.isSelected(),
-			chckbxSpecialCharacter.isSelected(),
-			chckbxKeyLowerThanLength.isSelected()
-	)));
+		
+		Long numberOfKey = app.numberOfKey(keyLength,
+											chckbx_09.isSelected(),
+											chckbx_az.isSelected(),
+											chckbx_AZ.isSelected(),
+											chckbxSpecialCharacter.isSelected(),
+											chckbxKeyLowerThanLength.isSelected()
+											);
+		if (numberOfKey < Long.MAX_VALUE)
+			txtNumberOfKey.setText(Long.toString(numberOfKey));
+		else 
+			txtNumberOfKey.setText("Overflow, but the dictionary will be created anyway");
+		
 	}
 	
 	@Override
@@ -83,7 +89,7 @@ public class SwingView implements View{
 	public void initialize() {
 		frmDictionarymaker = new JFrame();
 		frmDictionarymaker.setTitle("Dictionary Maker");
-		frmDictionarymaker.setBounds(100, 100, 690, 524);
+		frmDictionarymaker.setBounds(100, 100, 780, 600);
 		frmDictionarymaker.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
