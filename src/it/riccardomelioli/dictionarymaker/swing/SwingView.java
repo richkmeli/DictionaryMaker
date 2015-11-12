@@ -27,6 +27,8 @@ import java.net.URL;
 
 import javax.swing.JTextField;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+
 import java.awt.Font;
 import javax.swing.JTextArea;
 
@@ -40,6 +42,7 @@ public class SwingView implements View{
 	private JTextField textFieldSuffix;
 	private JTextField txtM;
 	private ImageFrame frmImgASCII;
+	private JProgressBar progressBar;
 
 	/**
 	 * Create the application.
@@ -198,6 +201,7 @@ public class SwingView implements View{
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_11.add(lblNewLabel);
 		
+		
 		txtM = new JTextField();
 		txtM.setBackground(Color.BLACK);
 		txtM.setForeground(Color.GREEN);
@@ -213,13 +217,14 @@ public class SwingView implements View{
 		panel_6.add(panel_9);
 		panel_9.setLayout(new GridLayout(0, 2, 10, 10));
 		
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
 		panel_9.add(progressBar);
 		progressBar.setFont(new Font("Tahoma", Font.BOLD, 23));
 		progressBar.setBackground(Color.BLACK);
 		progressBar.setForeground(new Color(0, 100, 0));
 		progressBar.setStringPainted(true);
-		progressBar.setValue(65);
+		progressBar.setValue(0);
+		progressBar.setMaximum(100);
 		
 		JButton btnGenerateTXT = new JButton("Generate TXT");
 		panel_9.add(btnGenerateTXT);
@@ -246,12 +251,23 @@ public class SwingView implements View{
 		txtareaTextBoard.setEditable(false);
 		txtareaTextBoard.setBackground(Color.BLACK);
 		txtareaTextBoard.setForeground(Color.GREEN);
-		panel_2.add(txtareaTextBoard);
+		
+
+		JScrollPane scrollPane = new JScrollPane(txtareaTextBoard);
+		panel_2.add(scrollPane);
 		
 		JLabel lblNewLabel_4 = new JLabel("TEXT BOARD");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_2.add(lblNewLabel_4, BorderLayout.NORTH);
 		
 		frmDictionarymaker.setVisible(true);
+	}
+
+	@Override
+	public void updateProgressBar(int perc) {
+		System.out.println(perc);
+		this.progressBar.setValue(perc);
+		this.progressBar.repaint();
+		
 	}
 }
