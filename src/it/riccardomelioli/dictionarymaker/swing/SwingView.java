@@ -18,6 +18,8 @@ import it.riccardomelioli.dictionarymaker.controller.App;
 import it.riccardomelioli.dictionarymaker.view.View;
 
 import javax.swing.border.LineBorder;
+import javax.swing.text.DefaultCaret;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -295,9 +297,12 @@ public class SwingView implements View{
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		txtareaTextBoard = new JTextArea();
+		txtareaTextBoard.setWrapStyleWord(true);
 		txtareaTextBoard.setEditable(false);
 		txtareaTextBoard.setBackground(Color.BLACK);
 		txtareaTextBoard.setForeground(Color.GREEN);
+		DefaultCaret caret = (DefaultCaret)txtareaTextBoard.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
 
 		JScrollPane scrollPane = new JScrollPane(txtareaTextBoard);
