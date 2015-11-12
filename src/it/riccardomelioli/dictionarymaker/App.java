@@ -150,6 +150,7 @@ public class App implements Runnable{
 				PrintWriter txtOut = openFile("Dictionary.txt");
 				generate(keyLength, createSymbolVector(chckbx_09,chckbx_az,chckbx_AZ,chckbx_SpecialCharacter), txtOut, chckbxKeyLowerThanLength);
 				txtOut.close();
+				view.setTxtareaTextBoard("[FINILAZE] Closing txt stream");
 			}
 		});
 		threadGenerate.start();
@@ -163,17 +164,19 @@ public class App implements Runnable{
 		updateViewTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
+				
+				enableGenerateButton(false);
+				
 				if(threadGenerate.isAlive()){
 					updateViewProgressBar(workStatus);
 				}
 				else {
 					updateViewProgressBar(100);
+					enableGenerateButton(true);
 					this.cancel();
 				}
 			}
 		}, 0,50);
-		
-		view.setTxtareaTextBoard("[FINILAZE] Closing txt stream");
 
 	}
 
@@ -192,6 +195,11 @@ public class App implements Runnable{
 	// aggiorna progressbar della view
 	private void updateViewProgressBar(int perc){
 		view.updateProgressBar(perc);
+	}
+	
+	// abilita disabilita tasto generate della view
+	private void enableGenerateButton(boolean val){
+		view.enableGenerateButton(val);
 	}
 	
 }

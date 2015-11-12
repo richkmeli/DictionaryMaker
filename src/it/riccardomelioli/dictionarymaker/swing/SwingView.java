@@ -6,11 +6,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Label;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -23,7 +20,6 @@ import it.riccardomelioli.dictionarymaker.view.View;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 
 import javax.swing.JTextField;
 import javax.swing.JProgressBar;
@@ -42,6 +38,7 @@ public class SwingView implements View{
 	private JTextField textFieldSuffix;
 	private JTextField txtM;
 	private ImageFrame frmImgASCII;
+	private JButton btnGenerateTXT;
 	private JProgressBar progressBar;
 
 	/**
@@ -226,7 +223,7 @@ public class SwingView implements View{
 		progressBar.setValue(0);
 		progressBar.setMaximum(100);
 		
-		JButton btnGenerateTXT = new JButton("Generate TXT");
+		btnGenerateTXT = new JButton("Generate TXT");
 		panel_9.add(btnGenerateTXT);
 		btnGenerateTXT.addMouseListener(new MouseAdapter() {
 			@Override
@@ -254,6 +251,7 @@ public class SwingView implements View{
 		
 
 		JScrollPane scrollPane = new JScrollPane(txtareaTextBoard);
+		scrollPane.setWheelScrollingEnabled(true);
 		panel_2.add(scrollPane);
 		
 		JLabel lblNewLabel_4 = new JLabel("TEXT BOARD");
@@ -267,7 +265,10 @@ public class SwingView implements View{
 	public void updateProgressBar(int perc) {
 		System.out.println(perc);
 		this.progressBar.setValue(perc);
-		this.progressBar.repaint();
-		
+	}
+
+	@Override
+	public void enableGenerateButton(boolean val) {
+		btnGenerateTXT.setEnabled(val);
 	}
 }
