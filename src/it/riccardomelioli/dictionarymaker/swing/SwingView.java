@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
 
-import it.riccardomelioli.dictionarymaker.App;
+import it.riccardomelioli.dictionarymaker.controller.App;
 import it.riccardomelioli.dictionarymaker.view.View;
 
 import javax.swing.border.LineBorder;
@@ -27,12 +27,14 @@ import javax.swing.JScrollPane;
 
 import java.awt.Font;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SwingView implements View{
 	protected App app;	// comunicazione da vista a controller
 	private JFrame frmDictionarymaker;
 	private JTextField textFieldKeyLength;
-	private JTextField txtCombination;
+	private JTextField txtNumberOfKey;
 	private JTextArea txtareaTextBoard; 			// per permettere la scrittora del controller durante la generate
 	private JTextField textFieldPrefix;
 	private JTextField textFieldSuffix;
@@ -40,7 +42,11 @@ public class SwingView implements View{
 	private ImageFrame frmImgASCII;
 	private JButton btnGenerateTXT;
 	private JProgressBar progressBar;
-
+	private JCheckBox chckbx_09;
+	private JCheckBox chckbx_AZ;
+	private JCheckBox chckbx_az;
+	private JCheckBox chckbxSpecialCharacter;
+	private JCheckBox chckbxKeyLowerThanLength;
 	/**
 	 * Create the application.
 	 */
@@ -54,11 +60,26 @@ public class SwingView implements View{
 		
 	}
 	
+	public void refreshTxtNumberIfKey(){
+		int keyLength = Integer.parseInt(textFieldKeyLength.getText());
+	txtNumberOfKey.setText(Long.toString(app.numberOfKey(keyLength,
+			chckbx_09.isSelected(),
+			chckbx_az.isSelected(),
+			chckbx_AZ.isSelected(),
+			chckbxSpecialCharacter.isSelected(),
+			chckbxKeyLowerThanLength.isSelected()
+	)));
+	}
 	
+	@Override
+	public void updateProgressBar(int perc) {
+		this.progressBar.setValue(perc);
+	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	@Override
+	public void enableGenerateButton(boolean val) {
+		btnGenerateTXT.setEnabled(val);
+	}
 	public void initialize() {
 		frmDictionarymaker = new JFrame();
 		frmDictionarymaker.setTitle("Dictionary Maker");
@@ -80,17 +101,40 @@ public class SwingView implements View{
 		panel_1.add(panel_4);
 		panel_4.setLayout(new GridLayout(4, 0, 0, 0));
 		
-		JCheckBox chckbx_09 = new JCheckBox("Character 0-9 (48-57)");
-		chckbx_09.setSelected(true);
+		chckbx_09 = new JCheckBox("Character 0-9 (48-57)");
+		chckbx_09.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				refreshTxtNumberIfKey();
+			}
+		});
 		panel_4.add(chckbx_09);
 		
-		JCheckBox chckbx_AZ = new JCheckBox("Character A-Z (65-90)");
+		chckbx_AZ = new JCheckBox("Character A-Z (65-90)");
+		chckbx_AZ.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				refreshTxtNumberIfKey();
+			}
+		});
 		panel_4.add(chckbx_AZ);
 		
-		JCheckBox chckbx_az = new JCheckBox("Character a-z (97-122)");
+		chckbx_az = new JCheckBox("Character a-z (97-122)");
+		chckbx_az.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				refreshTxtNumberIfKey();
+			}
+		});
 		panel_4.add(chckbx_az);
 		
-		JCheckBox chckbxSpecialCharacter = new JCheckBox("Character Special (21-47 _ 58-64 _ 91-96 _ 123-126)");
+		chckbxSpecialCharacter = new JCheckBox("Character Special (21-47 _ 58-64 _ 91-96 _ 123-126)");
+		chckbxSpecialCharacter.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				refreshTxtNumberIfKey();
+			}
+		});
 		panel_4.add(chckbxSpecialCharacter);
 		
 		JPanel panel_3 = new JPanel();
@@ -99,25 +143,10 @@ public class SwingView implements View{
 		panel_3.setLayout(new GridLayout(0, 1, 5, 5));
 		
 		// Frame Tabella ASCII
-		
-/*		frmASCII.setTitle("ASCII Table");
-		frmASCII.setBounds(100, 100, 500, 400);
-		frmASCII.setLayout(new BorderLayout());
-		frmASCII.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-*/		
 		JButton btnASCIItable = new JButton("Show ASCII table");
 		btnASCIItable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			/*	ImageIcon ASCIIicon = null;
-				URL ASCIIurl = getClass().getResource("/ASCIITable.gif");
-				if(ASCIIurl != null)
-					ASCIIicon = new ImageIcon(ASCIIurl);
-				
-				
-				// Jlabel con dentro l'immagine
-				JLabel labelASCII = new JLabel(ASCIIicon);
-				frmASCII.add(labelASCII,BorderLayout.CENTER);*/
 				frmImgASCII = new ImageFrame("/ASCIITable.gif");
 				frmImgASCII.setVisible(true);
 			}
@@ -125,18 +154,20 @@ public class SwingView implements View{
 		panel_3.add(btnASCIItable);
 	
 			
-		JLabel lblNumberOfCombination = new JLabel("Number of Combination");
-		lblNumberOfCombination.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_3.add(lblNumberOfCombination);
+		JLabel lblNumberOfKeys = new JLabel("Number of Keys");
+		lblNumberOfKeys.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_3.add(lblNumberOfKeys);
 		
-		txtCombination = new JTextField();
-		txtCombination.setForeground(Color.GREEN);
-		txtCombination.setBackground(Color.BLACK);
-		txtCombination.setEditable(false);
-		txtCombination.setText("0");
-		txtCombination.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_3.add(txtCombination);
-		txtCombination.setColumns(10);
+		txtNumberOfKey = new JTextField();
+		txtNumberOfKey.setForeground(Color.GREEN);
+		txtNumberOfKey.setBackground(Color.BLACK);
+		txtNumberOfKey.setEditable(false);
+		txtNumberOfKey.setText("0");
+		txtNumberOfKey.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_3.add(txtNumberOfKey);
+		txtNumberOfKey.setColumns(10);
+		
+		
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -176,11 +207,24 @@ public class SwingView implements View{
 		panel_8.add(lblKeyLength);
 		lblKeyLength.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		JCheckBox chckbxKeyLowerThanLength = new JCheckBox("Key Lower Than Length");
+		chckbxKeyLowerThanLength = new JCheckBox("Key Lower Than Length");
 		panel_8.add(chckbxKeyLowerThanLength);
 		chckbxKeyLowerThanLength.setHorizontalAlignment(SwingConstants.CENTER);
+		chckbxKeyLowerThanLength.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				refreshTxtNumberIfKey();
+			}
+		});
 		
 		textFieldKeyLength = new JTextField();
+		textFieldKeyLength.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				refreshTxtNumberIfKey();
+			}
+		});
+		
+		
 		panel_8.add(textFieldKeyLength);
 		textFieldKeyLength.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldKeyLength.setText("4");
@@ -212,7 +256,7 @@ public class SwingView implements View{
 		panel_9.setBackground(Color.WHITE);
 		panel_9.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_6.add(panel_9);
-		panel_9.setLayout(new GridLayout(0, 2, 10, 10));
+		panel_9.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		progressBar = new JProgressBar();
 		panel_9.add(progressBar);
@@ -259,16 +303,5 @@ public class SwingView implements View{
 		panel_2.add(lblNewLabel_4, BorderLayout.NORTH);
 		
 		frmDictionarymaker.setVisible(true);
-	}
-
-	@Override
-	public void updateProgressBar(int perc) {
-		System.out.println(perc);
-		this.progressBar.setValue(perc);
-	}
-
-	@Override
-	public void enableGenerateButton(boolean val) {
-		btnGenerateTXT.setEnabled(val);
 	}
 }
