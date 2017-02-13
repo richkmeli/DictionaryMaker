@@ -1,3 +1,7 @@
+/*
+ *     Copyright 2016 Riccardo Melioli. All Rights Reserved.
+ */
+
 package it.riccardomelioli.dictionarymaker.swing;
 
 
